@@ -14,9 +14,10 @@ public class AgentAB extends Agent{
 	public AgentAB(PlayerTurn playerTurn) {
 		super(playerTurn);
 	}
+	
 	@Override
 	public AgentMove getMove(GameBoardState gameState) {
-		// TODO Auto-generated method stub
+
 		return null;
 	}
 
