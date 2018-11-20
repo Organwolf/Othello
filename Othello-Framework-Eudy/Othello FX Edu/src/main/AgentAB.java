@@ -8,10 +8,10 @@ import com.eudycontreras.othello.models.GameBoardState;
 public class AgentAB extends Agent{
 	// why are the constructors private?
 	
-	private AgentAB() {
+	public AgentAB() {
 		super(PlayerTurn.PLAYER_ONE);
 	}
-	private AgentAB(PlayerTurn playerTurn) {
+	public AgentAB(PlayerTurn playerTurn) {
 		super(playerTurn);
 	}
 	@Override
