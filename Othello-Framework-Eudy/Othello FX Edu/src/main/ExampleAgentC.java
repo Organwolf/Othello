@@ -21,12 +21,12 @@ import com.eudycontreras.othello.threading.TimeSpan;
  */
 public class ExampleAgentC extends Agent{
 	
-	private ExampleAgentC() {
+	public ExampleAgentC() {
 		super(PlayerTurn.PLAYER_ONE);
 		// TODO Auto-generated constructor stub
 	}
 	
-	private ExampleAgentC(PlayerTurn playerTurn) {
+	public ExampleAgentC(PlayerTurn playerTurn) {
 		super(playerTurn);
 		// TODO Auto-generated constructor stub
 	}
