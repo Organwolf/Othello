@@ -197,6 +197,14 @@ public class AgentController {
 		});
 	}
 	
+	public static MoveWrapper ABMove(GameBoardState currentState, PlayerTurn turn) {
+		
+		//Best move chosen from a list of moves
+		ObjectiveWrapper bestMove = getBestMove(currentState, turn);
+		
+		return new MoveWrapper(bestMove);
+	}
+	
 	/**
 	 * Method for demonstrating an agent move 
 	 * @param gameState
