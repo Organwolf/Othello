@@ -210,7 +210,7 @@ public class AgentController {
 				bestMove = value;
 				bestMoveFound = new MoveWrapper(move);
 			}
-		}		
+		}	
 		return bestMoveFound;
 	}
 	
@@ -239,10 +239,8 @@ public class AgentController {
 				GameBoardState childState = getNewState(state, move);	
 				maxVal = Math.max(maxVal, minimax(depth-1, childState, !isMaximizingPlayer, GameTreeUtility.getCounterPlayer(playerTurn)));
 			}
-			return maxVal;
-			
-		}
-		
+			return maxVal;			
+		}		
 		else {
 			//System.out.println("mini");
 			int minVal = Integer.MAX_VALUE;
