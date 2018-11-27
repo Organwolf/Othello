@@ -33,7 +33,7 @@ public class UserSettings {
 	 * By popular rules the max search time should not
 	 * go above 5000 milliseconds;
 	 */
-	public static final int MAX_SEARCH_TIME = 4000;
+	public static final int MAX_SEARCH_TIME = 40000; //4000
 	
 	/**
 	 * Used for defining the minimum search time
@@ -47,7 +47,7 @@ public class UserSettings {
 	/**
 	 * Used for defining the search time
 	 */
-	public static final int SEARCH_TIME = 2500;
+	public static final int SEARCH_TIME = 25000; //2500
 	/**
 	 * The time it take for each Agent to play when 
 	 * Agent vs Agent is active. Adjust to better see
@@ -90,14 +90,14 @@ public class UserSettings {
 	 * from 0.4 to 1.4 and a value of 1.0 is default
 	 * Play around to find your sweet spot.
 	 */
-	public static final double GAME_WINDOW_SCALE = 0.9d;
+	public static final double GAME_WINDOW_SCALE = 0.7d;
 	/**
 	 * The size of the board:
 	 * The size can be 4, 6, or 8 any other value
 	 * will be converted to the closest valid value
 	 * The default size of the Othello board is 8x8
 	 */
-	public static final int BOARD_GRID_SIZE = 4;
+	public static final int BOARD_GRID_SIZE = 8;
 	/**
 	 * The theme which is to be set to the board
 	 * There are a total of 14 available themes 

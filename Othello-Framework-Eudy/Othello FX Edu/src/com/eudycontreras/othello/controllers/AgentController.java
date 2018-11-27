@@ -206,7 +206,7 @@ public class AgentController {
 		for (ObjectiveWrapper move : AvailableMoves) {
 			GameBoardState childState = getNewState(state, move);	
 			int value = minimax(depth-1, childState, !isMaximizingPlayer, playerTurn);
-			if (value>=bestMove) {
+			if (value>bestMove) {
 				bestMove = value;
 				bestMoveFound = new MoveWrapper(move);
 			}
@@ -215,25 +215,27 @@ public class AgentController {
 	}
 	
 	public static int minimax(int depth, GameBoardState state, boolean isMaximizingPlayer, PlayerTurn playerTurn) {
-		if (depth == 0 || state.isTerminal()) {
+		List<ObjectiveWrapper> availableMoves = getAvailableMoves(state, playerTurn);
+		
+		if (depth <= 0 || state.isTerminal() || availableMoves.isEmpty()) {
 			int result;
 			if (playerTurn == PlayerTurn.PLAYER_ONE) {
 				result = state.getWhiteCount() - state.getBlackCount();
-				System.out.println("Result of move: " + result);
-				return state.getWhiteCount() - state.getBlackCount();
 			}
 			else {
 				result = state.getBlackCount() - state.getWhiteCount();
-				System.out.println("Result of move: " + result);
-				return state.getBlackCount() - state.getWhiteCount();
-			}			
+			}		
+//			System.out.println("BlackCount: "+ String.valueOf(state.getBlackCount()));
+//			System.out.println("WhiteCount: "+ String.valueOf(state.getWhiteCount()+1));
+			System.out.println("Result of move: " + result);
+			return result;
 		}
 
-		List<ObjectiveWrapper> AvailableMoves = getAvailableMoves(state, playerTurn);
 		
 		if (isMaximizingPlayer) {
+			//System.out.println("maxi");
 			int maxVal = Integer.MIN_VALUE;
-			for (ObjectiveWrapper move : AvailableMoves) {
+			for (ObjectiveWrapper move : availableMoves) {
 				GameBoardState childState = getNewState(state, move);	
 				maxVal = Math.max(maxVal, minimax(depth-1, childState, !isMaximizingPlayer, GameTreeUtility.getCounterPlayer(playerTurn)));
 			}
@@ -242,8 +244,9 @@ public class AgentController {
 		}
 		
 		else {
+			//System.out.println("mini");
 			int minVal = Integer.MAX_VALUE;
-			for (ObjectiveWrapper move : AvailableMoves) {
+			for (ObjectiveWrapper move : availableMoves) {
 				GameBoardState childState = getNewState(state, move);	
 				minVal = Math.min(minVal, minimax(depth-1, childState, !isMaximizingPlayer, GameTreeUtility.getCounterPlayer(playerTurn)));
 			}
