@@ -49,9 +49,9 @@ public class ExampleAgentC extends Agent{
 	 */
 	private AgentMove getExampleMove(GameBoardState gameState){
 		
-		int waitTime = UserSettings.MIN_SEARCH_TIME;
-		
-		ThreadManager.pause(TimeSpan.millis(waitTime)); // Pauses execution for the wait time to cause delay
+//		int waitTime = UserSettings.MIN_SEARCH_TIME;
+//		
+//		ThreadManager.pause(TimeSpan.millis(waitTime)); // Pauses execution for the wait time to cause delay
 		
 		return AgentController.findSafeMove(gameState, playerTurn); // returns an example AI move Note: this is not AB Pruning
 	}

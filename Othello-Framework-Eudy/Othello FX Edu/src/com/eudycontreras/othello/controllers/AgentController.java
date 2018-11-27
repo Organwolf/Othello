@@ -197,6 +197,51 @@ public class AgentController {
 		});
 	}
 	
+	public static MoveWrapper minimax(GameBoardState state, PlayerTurn turn, boolean isMax) {
+		if (state.isTerminal()) {
+			
+			// return static evaluation of position
+			// return state.getStaticScore(state.getPlayerTurn());?
+
+		}
+		
+		if (isMax) {
+			int maxEval = Integer.MIN_VALUE;			
+			List<ObjectiveWrapper> moves = getAvailableMoves(state, turn);
+			MoveWrapper best = new MoveWrapper(moves.get(0));
+			for (ObjectiveWrapper move : moves) {
+				GameBoardState childState = getNewState(state, move);				
+				MoveWrapper eval = minimax(childState, GameTreeUtility.getCounterPlayer(turn), false);
+				int currentValue = eval.getMoveReward();
+				if (currentValue > maxEval) {
+					best = eval;
+				}
+			}
+			return best;
+		}
+		
+		else {
+			int minEval = Integer.MAX_VALUE;			
+			List<ObjectiveWrapper> moves = getAvailableMoves(state, turn);
+			MoveWrapper best = new MoveWrapper(moves.get(0));
+			for (ObjectiveWrapper move : moves) {
+				GameBoardState childState = getNewState(state, move);				
+				MoveWrapper eval = minimax(childState, GameTreeUtility.getCounterPlayer(turn), false);
+				int currentValue = eval.getMoveReward();
+				if (currentValue < minEval) {
+					best = eval;
+				}
+			}
+			return best;
+		}
+	}
+	
+	/**
+	 * Method using alpha beta pruning
+	 * @param currentState
+	 * @param turn
+	 * @return
+	 */
 	public static MoveWrapper ABMove(GameBoardState currentState, PlayerTurn turn) {
 		
 		//Best move chosen from a list of moves
@@ -298,6 +343,11 @@ public class AgentController {
 				
 				//The score of the agent given the current adversary move state
 				long agentScore = adversaryMoveState.getStaticScore(BoardCellState.WHITE);
+				
+				//Inserted code by Aron
+				int blackCount = adversaryMoveState.getBlackCount();
+				System.out.println(chosen.getPath().size());
+				
 				
 				//The score of the adversary given the current adversary move state
 				long adversaryScore = adversaryMoveState.getStaticScore(BoardCellState.BLACK);
