@@ -199,33 +199,56 @@ public class AgentController {
 	
 	public static MoveWrapper minimaxRoot(int depth, GameBoardState state, boolean isMaximizingPlayer, PlayerTurn playerTurn) {
 		
-		List<ObjectiveWrapper> moves = getAvailableMoves(state, playerTurn);
+		List<ObjectiveWrapper> AvailableMoves = getAvailableMoves(state, playerTurn);
 		int bestMove = Integer.MIN_VALUE;
-		MoveWrapper bestMoveFound = new MoveWrapper(moves.get(0));
+		MoveWrapper bestMoveFound = new MoveWrapper(null);
 		
-		for (ObjectiveWrapper move : moves) {
+		for (ObjectiveWrapper move : AvailableMoves) {
 			GameBoardState childState = getNewState(state, move);	
 			int value = minimax(depth-1, childState, !isMaximizingPlayer, playerTurn);
-			// game.undo?
 			if (value>=bestMove) {
 				bestMove = value;
 				bestMoveFound = new MoveWrapper(move);
 			}
-		}
-		
+		}		
 		return bestMoveFound;
 	}
 	
 	public static int minimax(int depth, GameBoardState state, boolean isMaximizingPlayer, PlayerTurn playerTurn) {
 		if (depth == 0 || state.isTerminal()) {
+			int result;
 			if (playerTurn == PlayerTurn.PLAYER_ONE) {
+				result = state.getWhiteCount() - state.getBlackCount();
+				System.out.println("Result of move: " + result);
 				return state.getWhiteCount() - state.getBlackCount();
 			}
 			else {
+				result = state.getBlackCount() - state.getWhiteCount();
+				System.out.println("Result of move: " + result);
 				return state.getBlackCount() - state.getWhiteCount();
 			}			
 		}
-		return 10;
+
+		List<ObjectiveWrapper> AvailableMoves = getAvailableMoves(state, playerTurn);
+		
+		if (isMaximizingPlayer) {
+			int maxVal = Integer.MIN_VALUE;
+			for (ObjectiveWrapper move : AvailableMoves) {
+				GameBoardState childState = getNewState(state, move);	
+				maxVal = Math.max(maxVal, minimax(depth-1, childState, !isMaximizingPlayer, GameTreeUtility.getCounterPlayer(playerTurn)));
+			}
+			return maxVal;
+			
+		}
+		
+		else {
+			int minVal = Integer.MAX_VALUE;
+			for (ObjectiveWrapper move : AvailableMoves) {
+				GameBoardState childState = getNewState(state, move);	
+				minVal = Math.min(minVal, minimax(depth-1, childState, !isMaximizingPlayer, GameTreeUtility.getCounterPlayer(playerTurn)));
+			}
+			return minVal;
+		}		
 	}
 	
 	/**
