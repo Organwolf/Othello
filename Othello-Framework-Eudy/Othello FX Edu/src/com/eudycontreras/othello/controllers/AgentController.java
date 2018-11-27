@@ -197,43 +197,35 @@ public class AgentController {
 		});
 	}
 	
-	public static MoveWrapper minimax(GameBoardState state, PlayerTurn turn, boolean isMax) {
-		if (state.isTerminal()) {
-			
-			// return static evaluation of position
-			// return state.getStaticScore(state.getPlayerTurn());?
-
+	public static MoveWrapper minimaxRoot(int depth, GameBoardState state, boolean isMaximizingPlayer, PlayerTurn playerTurn) {
+		
+		List<ObjectiveWrapper> moves = getAvailableMoves(state, playerTurn);
+		int bestMove = Integer.MIN_VALUE;
+		MoveWrapper bestMoveFound = new MoveWrapper(moves.get(0));
+		
+		for (ObjectiveWrapper move : moves) {
+			GameBoardState childState = getNewState(state, move);	
+			int value = minimax(depth-1, childState, !isMaximizingPlayer, playerTurn);
+			// game.undo?
+			if (value>=bestMove) {
+				bestMove = value;
+				bestMoveFound = new MoveWrapper(move);
+			}
 		}
 		
-		if (isMax) {
-			int maxEval = Integer.MIN_VALUE;			
-			List<ObjectiveWrapper> moves = getAvailableMoves(state, turn);
-			MoveWrapper best = new MoveWrapper(moves.get(0));
-			for (ObjectiveWrapper move : moves) {
-				GameBoardState childState = getNewState(state, move);				
-				MoveWrapper eval = minimax(childState, GameTreeUtility.getCounterPlayer(turn), false);
-				int currentValue = eval.getMoveReward();
-				if (currentValue > maxEval) {
-					best = eval;
-				}
+		return bestMoveFound;
+	}
+	
+	public static int minimax(int depth, GameBoardState state, boolean isMaximizingPlayer, PlayerTurn playerTurn) {
+		if (depth == 0 || state.isTerminal()) {
+			if (playerTurn == PlayerTurn.PLAYER_ONE) {
+				return state.getWhiteCount() - state.getBlackCount();
 			}
-			return best;
+			else {
+				return state.getBlackCount() - state.getWhiteCount();
+			}			
 		}
-		
-		else {
-			int minEval = Integer.MAX_VALUE;			
-			List<ObjectiveWrapper> moves = getAvailableMoves(state, turn);
-			MoveWrapper best = new MoveWrapper(moves.get(0));
-			for (ObjectiveWrapper move : moves) {
-				GameBoardState childState = getNewState(state, move);				
-				MoveWrapper eval = minimax(childState, GameTreeUtility.getCounterPlayer(turn), false);
-				int currentValue = eval.getMoveReward();
-				if (currentValue < minEval) {
-					best = eval;
-				}
-			}
-			return best;
-		}
+		return 10;
 	}
 	
 	/**

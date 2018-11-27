@@ -30,6 +30,7 @@ public class Minimax extends Agent {
 		List<ObjectiveWrapper> agentMoves = new LinkedList<>();
 		
 		// return moveWrapper at position 0
-		return AgentController.minimax(gameState, playerTurn, true); 
+		int depth = 1;
+		return AgentController.minimaxRoot(depth, gameState, true, PlayerTurn playerTurn); 
 	}
 }
