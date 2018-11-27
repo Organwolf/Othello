@@ -27,10 +27,8 @@ public class Minimax extends Agent {
 		
 		ThreadManager.pause(TimeSpan.millis(waitTime)); // Pauses execution for the wait time to cause delay
 		
-		List<ObjectiveWrapper> agentMoves = new LinkedList<>();
-		
-		// return moveWrapper at position 0
-		int depth = 3;
+		// never use depth = 1 -> will jump to evaluation immedietly
+		int depth = 4;
 		return AgentController.minimaxRoot(depth, gameState, true, playerTurn); 
 	}
 }

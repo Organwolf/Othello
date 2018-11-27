@@ -210,21 +210,17 @@ public class AgentController {
 				bestMove = value;
 				bestMoveFound = new MoveWrapper(move);
 			}
-		}		
+		}	
 		return bestMoveFound;
 	}
 	
 	public static int minimax(int depth, GameBoardState state, boolean isMaximizingPlayer, PlayerTurn playerTurn) {
+		
 		if (depth == 0 || state.isTerminal()) {
-			int result;
 			if (playerTurn == PlayerTurn.PLAYER_ONE) {
-				result = state.getWhiteCount() - state.getBlackCount();
-				System.out.println("Result of move: " + result);
 				return state.getWhiteCount() - state.getBlackCount();
 			}
 			else {
-				result = state.getBlackCount() - state.getWhiteCount();
-				System.out.println("Result of move: " + result);
 				return state.getBlackCount() - state.getWhiteCount();
 			}			
 		}
@@ -233,14 +229,13 @@ public class AgentController {
 		
 		if (isMaximizingPlayer) {
 			int maxVal = Integer.MIN_VALUE;
+
 			for (ObjectiveWrapper move : AvailableMoves) {
 				GameBoardState childState = getNewState(state, move);	
 				maxVal = Math.max(maxVal, minimax(depth-1, childState, !isMaximizingPlayer, GameTreeUtility.getCounterPlayer(playerTurn)));
 			}
-			return maxVal;
-			
-		}
-		
+			return maxVal;			
+		}		
 		else {
 			int minVal = Integer.MAX_VALUE;
 			for (ObjectiveWrapper move : AvailableMoves) {
