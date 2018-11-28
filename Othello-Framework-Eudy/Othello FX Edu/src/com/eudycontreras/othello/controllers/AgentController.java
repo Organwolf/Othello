@@ -208,6 +208,7 @@ public class AgentController {
 			int value = minimax(depth-1, childState, !isMaximizingPlayer, playerTurn);
 			if (value>bestMove) {
 				bestMove = value;
+				System.out.println("bestMove: "+String.valueOf(bestMove);
 				bestMoveFound = new MoveWrapper(move);
 			}
 		}	
@@ -216,21 +217,27 @@ public class AgentController {
 	
 	public static int minimax(int depth, GameBoardState state, boolean isMaximizingPlayer, PlayerTurn playerTurn) {
 		List<ObjectiveWrapper> availableMoves = getAvailableMoves(state, playerTurn);
-		
-		if (depth <= 0 || state.isTerminal() || availableMoves.isEmpty()) {
+		// Do we have to terminate if the player can't make any moves?
+		if (depth <= 0 || state.isTerminal()) {
 			int result;
 			if (playerTurn == PlayerTurn.PLAYER_ONE) {
 				result = state.getWhiteCount() - state.getBlackCount();
 			}
 			else {
-				result = state.getBlackCount() - state.getWhiteCount();
+				//result = state.getBlackCount() - state.getWhiteCount();
+				result = state.getWhiteCount() - state.getBlackCount();
 			}		
 //			System.out.println("BlackCount: "+ String.valueOf(state.getBlackCount()));
 //			System.out.println("WhiteCount: "+ String.valueOf(state.getWhiteCount()+1));
-			System.out.println("Result of move: " + result);
+			//System.out.println("Result of move: " + result);
 			return result;
 		}
 
+		if (availableMoves.isEmpty()) {
+			// How do we solve if the player can't make a move			
+			//isMaximizingPlayer = !isMaximizingPlayer;
+			//playerTurn = GameTreeUtility.getCounterPlayer(playerTurn);			
+		}
 		
 		if (isMaximizingPlayer) {
 			//System.out.println("maxi");

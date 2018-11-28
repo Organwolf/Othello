@@ -97,7 +97,7 @@ public class UserSettings {
 	 * will be converted to the closest valid value
 	 * The default size of the Othello board is 8x8
 	 */
-	public static final int BOARD_GRID_SIZE = 8;
+	public static final int BOARD_GRID_SIZE = 6;
 	/**
 	 * The theme which is to be set to the board
 	 * There are a total of 14 available themes 
