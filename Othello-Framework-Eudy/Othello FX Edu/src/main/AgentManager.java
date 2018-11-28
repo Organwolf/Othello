@@ -57,7 +57,6 @@ public class AgentManager extends Application{
 		/* ExampleAgentC uses findSafeMove */
 		//new Othello(primaryStage, new ExampleAgentC());
 		//new Othello(primaryStage, new ExampleAgentD());
-		//new Othello(primaryStage, new Minimax());
 		new Othello(primaryStage, new Minimax());
 	}
 
