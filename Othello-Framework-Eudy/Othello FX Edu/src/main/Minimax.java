@@ -28,7 +28,7 @@ public class Minimax extends Agent {
 		ThreadManager.pause(TimeSpan.millis(waitTime)); // Pauses execution for the wait time to cause delay
 		
 		// never use depth = 1 -> will jump to evaluation immedietly
-		int depth = 4;
+		int depth = 5;
 		return AgentController.minimaxRoot(depth, gameState, true, playerTurn); 
 	}
 }

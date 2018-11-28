@@ -205,27 +205,27 @@ public class AgentController {
 		
 		for (ObjectiveWrapper move : AvailableMoves) {
 			GameBoardState childState = getNewState(state, move);	
-			int value = minimax(depth-1, childState, !isMaximizingPlayer, playerTurn);
+			int value = minimax(depth-1, childState, !isMaximizingPlayer, playerTurn, playerTurn);
 			if (value>bestMove) {
 				bestMove = value;
-				System.out.println("bestMove: "+String.valueOf(bestMove);
+				System.out.println("bestMove: "+String.valueOf(bestMove));
 				bestMoveFound = new MoveWrapper(move);
 			}
 		}	
 		return bestMoveFound;
 	}
 	
-	public static int minimax(int depth, GameBoardState state, boolean isMaximizingPlayer, PlayerTurn playerTurn) {
+	public static int minimax(int depth, GameBoardState state, boolean isMaximizingPlayer, PlayerTurn playerTurn, PlayerTurn rootPlayer) {
 		List<ObjectiveWrapper> availableMoves = getAvailableMoves(state, playerTurn);
 		// Do we have to terminate if the player can't make any moves?
 		if (depth <= 0 || state.isTerminal()) {
 			int result;
-			if (playerTurn == PlayerTurn.PLAYER_ONE) {
+			if (rootPlayer == PlayerTurn.PLAYER_ONE) {
 				result = state.getWhiteCount() - state.getBlackCount();
 			}
 			else {
 				//result = state.getBlackCount() - state.getWhiteCount();
-				result = state.getWhiteCount() - state.getBlackCount();
+				result = state.getBlackCount() - state.getWhiteCount();
 			}		
 //			System.out.println("BlackCount: "+ String.valueOf(state.getBlackCount()));
 //			System.out.println("WhiteCount: "+ String.valueOf(state.getWhiteCount()+1));
@@ -235,8 +235,10 @@ public class AgentController {
 
 		if (availableMoves.isEmpty()) {
 			// How do we solve if the player can't make a move			
-			//isMaximizingPlayer = !isMaximizingPlayer;
-			//playerTurn = GameTreeUtility.getCounterPlayer(playerTurn);			
+			isMaximizingPlayer = !isMaximizingPlayer;
+			playerTurn = GameTreeUtility.getCounterPlayer(playerTurn);	
+			System.out.println("no children, pass to next!");
+			return minimax(depth-1, state, !isMaximizingPlayer, GameTreeUtility.getCounterPlayer(playerTurn), rootPlayer);
 		}
 		
 		if (isMaximizingPlayer) {
@@ -244,7 +246,7 @@ public class AgentController {
 			int maxVal = Integer.MIN_VALUE;
 			for (ObjectiveWrapper move : availableMoves) {
 				GameBoardState childState = getNewState(state, move);	
-				maxVal = Math.max(maxVal, minimax(depth-1, childState, !isMaximizingPlayer, GameTreeUtility.getCounterPlayer(playerTurn)));
+				maxVal = Math.max(maxVal, minimax(depth-1, childState, !isMaximizingPlayer, GameTreeUtility.getCounterPlayer(playerTurn), rootPlayer));
 			}
 			return maxVal;			
 		}		
@@ -253,7 +255,7 @@ public class AgentController {
 			int minVal = Integer.MAX_VALUE;
 			for (ObjectiveWrapper move : availableMoves) {
 				GameBoardState childState = getNewState(state, move);	
-				minVal = Math.min(minVal, minimax(depth-1, childState, !isMaximizingPlayer, GameTreeUtility.getCounterPlayer(playerTurn)));
+				minVal = Math.min(minVal, minimax(depth-1, childState, !isMaximizingPlayer, GameTreeUtility.getCounterPlayer(playerTurn), rootPlayer));
 			}
 			return minVal;
 		}		
