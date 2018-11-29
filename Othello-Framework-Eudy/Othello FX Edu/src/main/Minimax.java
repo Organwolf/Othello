@@ -28,7 +28,18 @@ public class Minimax extends Agent {
 		ThreadManager.pause(TimeSpan.millis(waitTime)); // Pauses execution for the wait time to cause delay
 		
 		// never use depth = 1 -> will jump to evaluation immedietly
-		int depth = 5;
-		return AgentController.minimaxRoot(depth, gameState, true, playerTurn); 
+		//int depth = 3;
+		AgentController.continueBool=true;
+		TurnTimer turnTimer = new TurnTimer();
+		turnTimer.start();
+		return AgentController.minimaxRoot(0, gameState, true, playerTurn); 
+	}
+	
+	private class TurnTimer extends Thread{
+		public void run() {
+			long startTime = System.currentTimeMillis();
+			while((startTime+500)>System.currentTimeMillis());
+			AgentController.continueBool=false;
+		}
 	}
 }

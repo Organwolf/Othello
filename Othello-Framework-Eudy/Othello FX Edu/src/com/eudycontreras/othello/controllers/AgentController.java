@@ -92,6 +92,8 @@ public class AgentController {
 	
 	private Agent agentOne;
 	private Agent agentTwo;
+	
+	public static boolean continueBool = true;
 
 	public AgentController(Othello othello, Agent move) {
 		this.othello = othello;
@@ -200,25 +202,39 @@ public class AgentController {
 	public static MoveWrapper minimaxRoot(int depth, GameBoardState state, boolean isMaximizingPlayer, PlayerTurn playerTurn) {
 		
 		List<ObjectiveWrapper> AvailableMoves = getAvailableMoves(state, playerTurn);
-		int bestMove = Integer.MIN_VALUE;
+		MoveWrapper iterationBestMoveFound = new MoveWrapper(null);
 		MoveWrapper bestMoveFound = new MoveWrapper(null);
-		
-		for (ObjectiveWrapper move : AvailableMoves) {
-			GameBoardState childState = getNewState(state, move);	
-			int value = minimax(depth-1, childState, !isMaximizingPlayer, playerTurn, playerTurn);
-			if (value>bestMove) {
-				bestMove = value;
-				System.out.println("bestMove: "+String.valueOf(bestMove));
-				bestMoveFound = new MoveWrapper(move);
+		int bestIterationValue = Integer.MIN_VALUE;
+		int bestValue = Integer.MIN_VALUE;
+		while(continueBool) {
+			bestMoveFound=new MoveWrapper(iterationBestMoveFound.getObjectiveWrapper());
+			bestValue = bestIterationValue;
+			depth++;
+			bestIterationValue = Integer.MIN_VALUE;
+			for (ObjectiveWrapper move : AvailableMoves) {
+				GameBoardState childState = getNewState(state, move);	
+				int value = minimax(depth-1, childState, !isMaximizingPlayer, playerTurn, playerTurn);
+				if (value>bestIterationValue) {
+					bestIterationValue = value;
+					iterationBestMoveFound = new MoveWrapper(move);
+				}
 			}
-		}	
+			
+		}
+		System.out.println("Search depth for this iteration: " + String.valueOf(depth));
+		System.out.println("Eval value: "+ String.valueOf(bestValue));
 		return bestMoveFound;
 	}
 	
 	public static int minimax(int depth, GameBoardState state, boolean isMaximizingPlayer, PlayerTurn playerTurn, PlayerTurn rootPlayer) {
+		if(continueBool==false) {
+			return -10000;
+		}
+		
 		List<ObjectiveWrapper> availableMoves = getAvailableMoves(state, playerTurn);
 		// Do we have to terminate if the player can't make any moves?
 		if (depth <= 0 || state.isTerminal()) {
+			//rootplayer decides on how the subtraction is done.
 			int result;
 			if (rootPlayer == PlayerTurn.PLAYER_ONE) {
 				result = state.getWhiteCount() - state.getBlackCount();
@@ -227,22 +243,19 @@ public class AgentController {
 				//result = state.getBlackCount() - state.getWhiteCount();
 				result = state.getBlackCount() - state.getWhiteCount();
 			}		
-//			System.out.println("BlackCount: "+ String.valueOf(state.getBlackCount()));
-//			System.out.println("WhiteCount: "+ String.valueOf(state.getWhiteCount()+1));
 			//System.out.println("Result of move: " + result);
 			return result;
 		}
 
-		if (availableMoves.isEmpty()) {
-			// How do we solve if the player can't make a move			
-			isMaximizingPlayer = !isMaximizingPlayer;
-			playerTurn = GameTreeUtility.getCounterPlayer(playerTurn);	
-			System.out.println("no children, pass to next!");
-			return minimax(depth-1, state, !isMaximizingPlayer, GameTreeUtility.getCounterPlayer(playerTurn), rootPlayer);
+		if (availableMoves.isEmpty()) {		
+			//System.out.println("no children, pass to next!");
+			//return minimax(depth-1, state, !isMaximizingPlayer, GameTreeUtility.getCounterPlayer(playerTurn), rootPlayer);
+			//Not sure if this is correct. 
+			//I believe that we can skip a depth and keep the playerTurn.
+			return minimax(depth-2, state, isMaximizingPlayer, playerTurn, rootPlayer);
 		}
 		
 		if (isMaximizingPlayer) {
-			//System.out.println("maxi");
 			int maxVal = Integer.MIN_VALUE;
 			for (ObjectiveWrapper move : availableMoves) {
 				GameBoardState childState = getNewState(state, move);	
@@ -251,7 +264,6 @@ public class AgentController {
 			return maxVal;			
 		}		
 		else {
-			//System.out.println("mini");
 			int minVal = Integer.MAX_VALUE;
 			for (ObjectiveWrapper move : availableMoves) {
 				GameBoardState childState = getNewState(state, move);	

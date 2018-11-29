@@ -23,6 +23,8 @@ public class MoveWrapper extends AgentMove{
 	
 	private BoardCellState target;
 	
+	private ObjectiveWrapper objectiveWrapper;
+	
 	public final boolean NULL;
 
 	public MoveWrapper(ObjectiveWrapper objective, int initialWorth){
@@ -53,10 +55,15 @@ public class MoveWrapper extends AgentMove{
 		if(objective.getObjectiveCell() == null){
 			return;
 		}
+		this.objectiveWrapper = objective;
 		this.target = objective.getObjectiveCell().getCellState();
 		this.moveIndex = objective.getObjectiveCell().getIndex();
 		this.startIndex = objective.getCurrentCell().getIndex();
 		this.moveReward = objective.getPath().size();
+	}
+	
+	public ObjectiveWrapper getObjectiveWrapper() {
+		return objectiveWrapper;
 	}
 
 	/**
