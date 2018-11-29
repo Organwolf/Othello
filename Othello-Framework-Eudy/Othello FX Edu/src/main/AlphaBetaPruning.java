@@ -28,6 +28,6 @@ public class AlphaBetaPruning extends Agent {
 		ThreadManager.pause(TimeSpan.millis(waitTime)); // Pauses execution for the wait time to cause delay
 		
 		int depth = 4;
-		return AgentController.alphaBetaRoot(0, 0, depth, gameState, true, playerTurn); 
+		return AgentController.alphaBetaRoot(Integer.MIN_VALUE, Integer.MAX_VALUE, depth, gameState, true, playerTurn); 
 	}
 }

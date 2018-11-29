@@ -234,15 +234,34 @@ public class AgentController {
 
 			for (ObjectiveWrapper move : AvailableMoves) {
 				GameBoardState childState = getNewState(state, move);	
-				maxVal = Math.max(maxVal, alphaBetaPruning(alpha, beta, depth-1, childState, !isMaximizingPlayer, GameTreeUtility.getCounterPlayer(playerTurn)));
+				int moveResult = alphaBetaPruning(alpha, beta, depth-1, childState, !isMaximizingPlayer, GameTreeUtility.getCounterPlayer(playerTurn));
+				if (moveResult > maxVal) {
+					maxVal = moveResult;
+				}
+				
+				alpha = Math.max(alpha, maxVal);
+				
+				if (alpha >= beta) {
+					break;
+				}				
 			}
 			return maxVal;			
 		}		
 		else {
 			int minVal = Integer.MAX_VALUE;
+			
 			for (ObjectiveWrapper move : AvailableMoves) {
 				GameBoardState childState = getNewState(state, move);	
-				minVal = Math.min(minVal, alphaBetaPruning(alpha, beta, depth-1, childState, !isMaximizingPlayer, GameTreeUtility.getCounterPlayer(playerTurn)));
+				int moveResult = alphaBetaPruning(alpha, beta, depth-1, childState, !isMaximizingPlayer, GameTreeUtility.getCounterPlayer(playerTurn));
+				if (moveResult < minVal) {
+					minVal = moveResult;
+				}
+				
+				beta = Math.min(beta, minVal);
+				
+				if (alpha >= beta) {
+					break;
+				}
 			}
 			return minVal;
 		}		
