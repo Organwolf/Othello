@@ -23,7 +23,7 @@ public class UserSettings {
 	/**
 	 * Determines the game mode to use
 	 */
-	public static final GameMode GAME_MODE = GameMode.HUMAN_VS_AGENT;
+	public static final GameMode GAME_MODE = GameMode.AGENT_VS_AGENT;
 	/**
 	 * Delay before the game starts when the agent is playing
 	 */
@@ -33,7 +33,7 @@ public class UserSettings {
 	 * By popular rules the max search time should not
 	 * go above 5000 milliseconds;
 	 */
-	public static final int MAX_SEARCH_TIME = 40000; //4000
+	public static final int MAX_SEARCH_TIME = 1000; //4000
 	
 	/**
 	 * Used for defining the minimum search time
@@ -47,7 +47,7 @@ public class UserSettings {
 	/**
 	 * Used for defining the search time
 	 */
-	public static final int SEARCH_TIME = 25000; //2500
+	public static final int SEARCH_TIME = 500; //2500
 	/**
 	 * The time it take for each Agent to play when 
 	 * Agent vs Agent is active. Adjust to better see

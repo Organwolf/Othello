@@ -29,7 +29,7 @@ public class Minimax extends Agent {
 		
 		// never use depth = 1 -> will jump to evaluation immedietly
 		//int depth = 3;
-		AgentController.continueBool=true;
+		AgentController.checkNextDepth=true;
 		TurnTimer turnTimer = new TurnTimer();
 		turnTimer.start();
 		return AgentController.minimaxRoot(0, gameState, true, playerTurn); 
@@ -38,8 +38,8 @@ public class Minimax extends Agent {
 	private class TurnTimer extends Thread{
 		public void run() {
 			long startTime = System.currentTimeMillis();
-			while((startTime+500)>System.currentTimeMillis());
-			AgentController.continueBool=false;
+			while((startTime+UserSettings.MAX_SEARCH_TIME)>System.currentTimeMillis());
+			AgentController.checkNextDepth=false;
 		}
 	}
 }

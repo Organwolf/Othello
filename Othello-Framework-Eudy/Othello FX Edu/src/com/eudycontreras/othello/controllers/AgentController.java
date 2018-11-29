@@ -93,7 +93,7 @@ public class AgentController {
 	private Agent agentOne;
 	private Agent agentTwo;
 	
-	public static boolean continueBool = true;
+	public static boolean checkNextDepth = true;
 
 	public AgentController(Othello othello, Agent move) {
 		this.othello = othello;
@@ -206,7 +206,7 @@ public class AgentController {
 		MoveWrapper bestMoveFound = new MoveWrapper(null);
 		int bestIterationValue = Integer.MIN_VALUE;
 		int bestValue = Integer.MIN_VALUE;
-		while(continueBool) {
+		while(checkNextDepth) {
 			bestMoveFound=new MoveWrapper(iterationBestMoveFound.getObjectiveWrapper());
 			bestValue = bestIterationValue;
 			depth++;
@@ -219,21 +219,21 @@ public class AgentController {
 					iterationBestMoveFound = new MoveWrapper(move);
 				}
 			}
-			
+			System.out.println("Finished evaluating depth: "+ String.valueOf(depth));
 		}
-		System.out.println("Search depth for this iteration: " + String.valueOf(depth));
+		System.out.println("Move based on " + String.valueOf(depth) + " moves ahead!");
 		System.out.println("Eval value: "+ String.valueOf(bestValue));
 		return bestMoveFound;
 	}
 	
 	public static int minimax(int depth, GameBoardState state, boolean isMaximizingPlayer, PlayerTurn playerTurn, PlayerTurn rootPlayer) {
-		if(continueBool==false) {
+		if(checkNextDepth==false) {
 			return -10000;
 		}
 		
 		List<ObjectiveWrapper> availableMoves = getAvailableMoves(state, playerTurn);
 		// Do we have to terminate if the player can't make any moves?
-		if (depth <= 0 || state.isTerminal()) {
+		if (depth <= 0 || state.isTerminal() || (getAvailableMoves(state, PlayerTurn.PLAYER_ONE).isEmpty() && getAvailableMoves(state, PlayerTurn.PLAYER_TWO).isEmpty())) {
 			//rootplayer decides on how the subtraction is done.
 			int result;
 			if (rootPlayer == PlayerTurn.PLAYER_ONE) {
