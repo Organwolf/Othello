@@ -197,6 +197,57 @@ public class AgentController {
 		});
 	}
 	
+	public static MoveWrapper alphaBetaRoot(int alpha, int beta, int depth, GameBoardState state, boolean isMaximizingPlayer, PlayerTurn playerTurn) {
+		
+		// alpha and beta added as in parameters
+		
+		List<ObjectiveWrapper> AvailableMoves = getAvailableMoves(state, playerTurn);
+		int bestMove = Integer.MIN_VALUE;
+		MoveWrapper bestMoveFound = new MoveWrapper(null);
+		
+		for (ObjectiveWrapper move : AvailableMoves) {
+			GameBoardState childState = getNewState(state, move);	
+			int value = alphaBetaPruning(alpha, beta, depth-1, childState, !isMaximizingPlayer, playerTurn);
+			if (value>=bestMove) {
+				bestMove = value;
+				bestMoveFound = new MoveWrapper(move);
+			}
+		}	
+		return bestMoveFound;
+	}
+	
+	public static int alphaBetaPruning(int alpha, int beta, int depth, GameBoardState state, boolean isMaximizingPlayer, PlayerTurn playerTurn) {
+		
+		if (depth == 0 || state.isTerminal()) {
+			if (playerTurn == PlayerTurn.PLAYER_ONE) {
+				return state.getWhiteCount() - state.getBlackCount();
+			}
+			else {
+				return state.getBlackCount() - state.getWhiteCount();
+			}			
+		}
+
+		List<ObjectiveWrapper> AvailableMoves = getAvailableMoves(state, playerTurn);
+		
+		if (isMaximizingPlayer) {
+			int maxVal = Integer.MIN_VALUE;
+
+			for (ObjectiveWrapper move : AvailableMoves) {
+				GameBoardState childState = getNewState(state, move);	
+				maxVal = Math.max(maxVal, alphaBetaPruning(alpha, beta, depth-1, childState, !isMaximizingPlayer, GameTreeUtility.getCounterPlayer(playerTurn)));
+			}
+			return maxVal;			
+		}		
+		else {
+			int minVal = Integer.MAX_VALUE;
+			for (ObjectiveWrapper move : AvailableMoves) {
+				GameBoardState childState = getNewState(state, move);	
+				minVal = Math.min(minVal, alphaBetaPruning(alpha, beta, depth-1, childState, !isMaximizingPlayer, GameTreeUtility.getCounterPlayer(playerTurn)));
+			}
+			return minVal;
+		}		
+	}
+	
 	public static MoveWrapper minimaxRoot(int depth, GameBoardState state, boolean isMaximizingPlayer, PlayerTurn playerTurn) {
 		
 		List<ObjectiveWrapper> AvailableMoves = getAvailableMoves(state, playerTurn);
