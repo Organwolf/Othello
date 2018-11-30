@@ -209,7 +209,7 @@ public class AgentController {
 		while(checkNextDepth) {
 			bestMoveFound=new MoveWrapper(iterationBestMoveFound.getObjectiveWrapper());
 			bestValue = bestIterationValue;
-			depth++;
+			depth+=2;
 			bestIterationValue = Integer.MIN_VALUE;
 			for (ObjectiveWrapper move : AvailableMoves) {
 				GameBoardState childState = getNewState(state, move);	
@@ -235,14 +235,20 @@ public class AgentController {
 		// Do we have to terminate if the player can't make any moves?
 		if (depth <= 0 || state.isTerminal() || (getAvailableMoves(state, PlayerTurn.PLAYER_ONE).isEmpty() && getAvailableMoves(state, PlayerTurn.PLAYER_TWO).isEmpty())) {
 			//rootplayer decides on how the subtraction is done.
-			int result;
-			if (rootPlayer == PlayerTurn.PLAYER_ONE) {
-				result = state.getWhiteCount() - state.getBlackCount();
+			int result=0;
+			//result = state.getWhiteCount() - state.getBlackCount();
+			//result = getAvailableMoves(state, PlayerTurn.PLAYER_ONE).size()-getAvailableMoves(state, PlayerTurn.PLAYER_TWO).size();
+			GameBoardCell[][] grid = state.getGameBoard().getCells();
+			for(int i=0;i<UserSettings.BOARD_GRID_SIZE;i++) {
+				for(int j=0;j<UserSettings.BOARD_GRID_SIZE;j++) {
+					if(grid[i][j].getCellState() == BoardCellState.WHITE) {
+						result+=WEIGHT_MATRIX_8X8[i][j];
+					}
+					else if(grid[i][j].getCellState() == BoardCellState.BLACK){
+						result-=WEIGHT_MATRIX_8X8[i][j];
+					}
+				}
 			}
-			else {
-				//result = state.getBlackCount() - state.getWhiteCount();
-				result = state.getBlackCount() - state.getWhiteCount();
-			}		
 			//System.out.println("Result of move: " + result);
 			return result;
 		}
