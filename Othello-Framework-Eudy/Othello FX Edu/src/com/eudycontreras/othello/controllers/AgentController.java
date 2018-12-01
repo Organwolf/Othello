@@ -876,7 +876,7 @@ public class AgentController {
 		double mobilityMultiplier = 78.922;
 		double frontierMultiplier = 74.396;
 		double vulnerabilityMultiplier = 0;
-		double weightMultiplier = 10.0;
+		double weightMultiplier = 1000.0; //10
 		
 		double cornerDomination = getCornerDominationHeuristic(state);
 
