@@ -57,7 +57,6 @@ public class Minimax extends Agent {
 		int nbrOfWhiteMoves =  AgentController.getAvailableMoves(state, PlayerTurn.PLAYER_ONE).size();
 		int nbrOfBlackMoves =  AgentController.getAvailableMoves(state, PlayerTurn.PLAYER_TWO).size();
 		if (depth <= 0 || state.isTerminal() || ((nbrOfBlackMoves+nbrOfWhiteMoves)==0)) {
-			//return nbrOfWhiteMoves - nbrOfBlackMoves;
 			return (int) AgentController.getGameEvaluation(state, playerTurn);
 		}
 

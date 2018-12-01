@@ -453,16 +453,32 @@ public class AgentController {
 	 * @return
 	 */
 	public static StrategyType getStrategyType(GameBoardState state){
-		int earlyCount = (int)(state.getTotalCount() * 0.3333);
-		int midCount = (int)(state.getTotalCount() * 0.5);
+		int nbrOfcells = UserSettings.BOARD_GRID_SIZE*UserSettings.BOARD_GRID_SIZE;
+		int earlyCount = (int)(nbrOfcells * 0.3333);
+		int midCount = (int)(nbrOfcells * 0.5); //changed from state.getTotalCount()
+		//System.out.println(earlyCount);
 		
 		if(state.getTotalCount() <= earlyCount){
+			//System.out.println("early");
 			return StrategyType.EARLY_GAME;
 		}else if(state.getTotalCount() > earlyCount && state.getTotalCount() < midCount){
+			//System.out.println("mid");
 			return StrategyType.MID_GAME;
 		}else{
+			//System.out.println("late");
 			return StrategyType.LATE_GAME;
 		}
+		
+//		if(state.getTotalCount() <= earlyCount){
+//			System.out.println("early");
+//			return StrategyType.EARLY_GAME;
+//		}else if(state.getTotalCount() > earlyCount && state.getTotalCount() < midCount){
+//			System.out.println("mid");
+//			return StrategyType.MID_GAME;
+//		}else{
+//			System.out.println("late");
+//			return StrategyType.LATE_GAME;
+//		}
 	}
 	
 	/**
@@ -514,6 +530,7 @@ public class AgentController {
 			return heuristicEvaluation(state, heuristicType, playerTurn);
 		case LATE_GAME:
 			return heuristicEvaluation(state, heuristicType, playerTurn);
+			//return heuristicEvaluation(state, HeuristicType.DIFFERENTIATION, playerTurn);
 		default:
 			return heuristicEvaluation(state, heuristicType, playerTurn);
 		
@@ -876,7 +893,7 @@ public class AgentController {
 		double mobilityMultiplier = 78.922;
 		double frontierMultiplier = 74.396;
 		double vulnerabilityMultiplier = 0;
-		double weightMultiplier = 1000.0; //10
+		double weightMultiplier = 10.0; //10
 		
 		double cornerDomination = getCornerDominationHeuristic(state);
 
