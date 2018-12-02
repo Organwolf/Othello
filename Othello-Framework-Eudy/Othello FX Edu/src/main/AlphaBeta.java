@@ -32,6 +32,8 @@ public class AlphaBeta extends Agent {
 	}
 	
 	private MoveWrapper alphaBetaRoot(int depth, GameBoardState state, boolean isMaximizingPlayer, PlayerTurn playerTurn) {
+		nodesExplored=0;
+		prunedBranches=0;
 		
 		List<ObjectiveWrapper> AvailableMoves = AgentController.getAvailableMoves(state, playerTurn);
 		int bestMove = Integer.MIN_VALUE;
@@ -86,7 +88,7 @@ public class AlphaBeta extends Agent {
 			for (ObjectiveWrapper move : availableMoves) {
 				GameBoardState childState = AgentController.getNewState(state, move);	
 				int eval = alphaBeta(alpha, beta, depth-1, childState, !isMaximizingPlayer, GameTreeUtility.getCounterPlayer(playerTurn));
-				minEval = Math.min(minEval, minEval);
+				minEval = Math.min(minEval, eval);
 				beta = Math.min(beta, eval);
 				if (beta <= alpha) {
 					prunedBranches++;
