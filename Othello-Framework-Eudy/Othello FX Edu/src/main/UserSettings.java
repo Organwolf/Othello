@@ -23,7 +23,7 @@ public class UserSettings {
 	/**
 	 * Determines the game mode to use
 	 */
-	public static final GameMode GAME_MODE = GameMode.HUMAN_VS_AGENT;
+	public static final GameMode GAME_MODE = GameMode.AGENT_VS_AGENT;
 	/**
 	 * Delay before the game starts when the agent is playing
 	 */
@@ -33,7 +33,7 @@ public class UserSettings {
 	 * By popular rules the max search time should not
 	 * go above 5000 milliseconds;
 	 */
-	public static final int MAX_SEARCH_TIME = 40000; //4000
+	public static final int MAX_SEARCH_TIME = 100; //4000
 	
 	/**
 	 * Used for defining the minimum search time
@@ -97,7 +97,7 @@ public class UserSettings {
 	 * will be converted to the closest valid value
 	 * The default size of the Othello board is 8x8
 	 */
-	public static final int BOARD_GRID_SIZE = 6;
+	public static final int BOARD_GRID_SIZE = 8;
 	/**
 	 * The theme which is to be set to the board
 	 * There are a total of 14 available themes 
