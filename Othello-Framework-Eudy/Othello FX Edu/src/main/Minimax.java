@@ -17,6 +17,8 @@ import com.eudycontreras.othello.utilities.GameTreeUtility;
 
 public class Minimax extends Agent {
 	
+	private boolean checkNextDepth;
+
 	public Minimax() {
 		super(PlayerTurn.PLAYER_ONE);
 	}
@@ -29,8 +31,12 @@ public class Minimax extends Agent {
 		ThreadManager.pause(TimeSpan.millis(waitTime)); // Pauses execution for the wait time to cause delay
 		
 		// never use depth = 1 -> will jump to evaluation immediately
-		int depth = 4;
-		return minimaxRoot(depth, gameState, true, playerTurn); 
+		int depth = 2;
+		long startTime = System.currentTimeMillis();
+		AgentMove val = minimaxRoot(depth, gameState, true, playerTurn); 
+		long endTime = System.currentTimeMillis();
+		System.out.println("Time taken: " + String.valueOf(endTime-startTime) + "mS");
+		return val;
 	}
 	
 	private MoveWrapper minimaxRoot(int depth, GameBoardState state, boolean isMaximizingPlayer, PlayerTurn playerTurn) {
@@ -56,8 +62,9 @@ public class Minimax extends Agent {
 		// Do we have to terminate if the player can't make any moves?
 		int nbrOfWhiteMoves =  AgentController.getAvailableMoves(state, PlayerTurn.PLAYER_ONE).size();
 		int nbrOfBlackMoves =  AgentController.getAvailableMoves(state, PlayerTurn.PLAYER_TWO).size();
-		if (depth <= 0 || state.isTerminal() || ((nbrOfBlackMoves+nbrOfWhiteMoves)==0)) {
+		if (depth == 0 || state.isTerminal() || ((nbrOfBlackMoves+nbrOfWhiteMoves)==0)) {
 			return (int) AgentController.getGameEvaluation(state, playerTurn);
+			//return (int) AgentController.getDifferentiationHeuristic(state);
 		}
 
 		if (availableMoves.isEmpty()) {
@@ -81,5 +88,13 @@ public class Minimax extends Agent {
 			}
 			return minVal;
 		}		
+	}
+	
+	private class TurnTimer extends Thread{
+		public void run() {
+			long startTime = System.currentTimeMillis();
+			while((startTime+UserSettings.MAX_SEARCH_TIME)>System.currentTimeMillis());
+			checkNextDepth=false;
+		}
 	}
 }
