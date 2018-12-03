@@ -41,7 +41,7 @@ public class AlphaBeta extends Agent {
 		
 		for (ObjectiveWrapper move : AvailableMoves) {
 			GameBoardState childState = AgentController.getNewState(state, move);	
-			int value = alphaBeta(Integer.MIN_VALUE, Integer.MAX_VALUE, depth-1, childState, !isMaximizingPlayer, playerTurn);
+			int value = alphaBeta(Integer.MIN_VALUE, Integer.MAX_VALUE, depth-1, childState, isMaximizingPlayer, playerTurn);
 			if (value>bestMove) {
 				bestMove = value;
 				bestMoveFound = new MoveWrapper(move);
