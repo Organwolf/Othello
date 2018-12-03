@@ -15,6 +15,7 @@ import com.eudycontreras.othello.models.GameBoardState;
 import com.eudycontreras.othello.threading.ThreadManager;
 import com.eudycontreras.othello.threading.TimeSpan;
 import com.eudycontreras.othello.utilities.GameTreeUtility;
+import com.eudycontreras.othello.views.GameInfoView;
 
 public class AlphaBeta extends Agent {
 	int nodesExplored = 0;
@@ -57,11 +58,9 @@ public class AlphaBeta extends Agent {
 			}
 		}
 		System.out.println("time take: " + String.valueOf(System.currentTimeMillis()-startTime) + "mS");
-		System.out.println("Depth of the search: " + String.valueOf(bestDepth));
-		// System.out.println("bestMove: "+String.valueOf(maxScore));
-		// System.out.println("Depth reached: " + depth);
-		System.out.println("Nodes explored: " + nodesExplored);
-		System.out.println("Branched pruned: " + prunedBranches);
+		this.setSearchDepth(bestDepth);
+		this.setNodesExamined(nodesExplored);
+		this.setPrunedCounter(prunedBranches);
 		return bestMoveFound;
 	}
 
