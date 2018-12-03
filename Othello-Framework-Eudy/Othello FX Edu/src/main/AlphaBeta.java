@@ -46,7 +46,7 @@ public class AlphaBeta extends Agent {
 				bestMoveFound = new MoveWrapper(move);
 			}
 		}
-		System.out.println("time take: " + String.valueOf(System.currentTimeMillis()-startTime));
+		System.out.println("time take: " + String.valueOf(System.currentTimeMillis()-startTime) + "mS");
 		System.out.println("Move based on " + String.valueOf(depth) + " moves ahead!");
 		System.out.println("bestMove: "+String.valueOf(maxScore));
 		// System.out.println("Depth reached: " + depth);
@@ -64,7 +64,7 @@ public class AlphaBeta extends Agent {
 	private int iterativeDeepeningSearch(GameBoardState state, long timeLimit) {
 		long startTime = System.currentTimeMillis();
 		long endTime = startTime + timeLimit;
-		depth = 1;
+		depth = 0;
 		int score = 0;
 		searchCutoff = false;
 		
@@ -75,17 +75,13 @@ public class AlphaBeta extends Agent {
 				break;
 			}
 			
-			int searchResult = alphaBeta(Integer.MIN_VALUE, Integer.MAX_VALUE, depth, state, false, playerTurn, currentTime, endTime - currentTime);
-			
-			//
-			// If the search finds a winning move, stop searching
-			//
+			int searchResult = alphaBeta(Integer.MIN_VALUE, Integer.MAX_VALUE, depth, state, true, playerTurn, currentTime, endTime - currentTime);
 			
 			if (!searchCutoff) {
 				score = searchResult;
 			}
 			
-			depth++;
+			depth+=2;
 		}
 		System.out.println("result on depth " + String.valueOf(depth)+ ": " + String.valueOf(score));
 		return score;
@@ -106,8 +102,8 @@ public class AlphaBeta extends Agent {
 	
 	// Iterative deepening - time limit exceeded should terminate the search
 	if (searchCutoff || depth == 0 || state.isTerminal() || ((nbrOfBlackMoves+nbrOfWhiteMoves)==0)) {
-		//return (int) AgentController.getGameEvaluation(state, playerTurn);
-		return (int) AgentController.getMobilityHeuristic(state);
+		return (int) AgentController.getGameEvaluation(state, playerTurn);
+		//return (int) AgentController.getMobilityHeuristic(state);
 		//return (int) AgentController.getDifferentiationHeuristic(state);
 	}
 	
