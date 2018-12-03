@@ -292,8 +292,8 @@ public class AgentController {
 				long agentScore = adversaryMoveState.getStaticScore(BoardCellState.WHITE);
 				
 				//Inserted code by Aron
-				int blackCount = adversaryMoveState.getBlackCount();
-				System.out.println(chosen.getPath().size());
+				//int blackCount = adversaryMoveState.getBlackCount();
+				//System.out.println(chosen.getPath().size());
 				
 				
 				//The score of the adversary given the current adversary move state
