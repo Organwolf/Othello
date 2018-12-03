@@ -33,7 +33,7 @@ public class UserSettings {
 	 * By popular rules the max search time should not
 	 * go above 5000 milliseconds;
 	 */
-	public static final int MAX_SEARCH_TIME = 100; //4000
+	public static final int MAX_SEARCH_TIME = 5000; //4000
 	
 	/**
 	 * Used for defining the minimum search time

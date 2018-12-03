@@ -27,6 +27,8 @@ public class AlphaBeta extends Agent {
 		super(playerTurn);
 	}
 	public AgentMove getMove(GameBoardState gameState) {
+		nodesExplored=0;
+		prunedBranches=0;
 		
 		int waitTime = UserSettings.MIN_SEARCH_TIME;
 		ThreadManager.pause(TimeSpan.millis(waitTime));
@@ -54,13 +56,7 @@ public class AlphaBeta extends Agent {
 		System.out.println("Branched pruned: " + prunedBranches);
 		return bestMoveFound;
 	}
-	
-	
-	
-	
-	
-	
-	
+
 	private int iterativeDeepeningSearch(GameBoardState state, long timeLimit) {
 		long startTime = System.currentTimeMillis();
 		long endTime = startTime + timeLimit;
@@ -75,7 +71,7 @@ public class AlphaBeta extends Agent {
 				break;
 			}
 			
-			int searchResult = alphaBeta(Integer.MIN_VALUE, Integer.MAX_VALUE, depth, state, true, playerTurn, currentTime, endTime - currentTime);
+			int searchResult = alphaBeta(Integer.MIN_VALUE, Integer.MAX_VALUE, depth, state, playerTurn, currentTime, endTime - currentTime);
 			
 			if (!searchCutoff) {
 				score = searchResult;
@@ -87,7 +83,7 @@ public class AlphaBeta extends Agent {
 		return score;
 	}
 	
-	private int alphaBeta(int alpha, int beta, int depth, GameBoardState state, boolean isMaximizingPlayer, PlayerTurn playerTurn, long startTime, long timeLimit) {
+	private int alphaBeta(int alpha, int beta, int depth, GameBoardState state, PlayerTurn playerTurn, long startTime, long timeLimit) {
 	nodesExplored++;
 	long currentTime = System.currentTimeMillis();
 	long elapsedTime = (currentTime - startTime);
@@ -107,13 +103,13 @@ public class AlphaBeta extends Agent {
 		//return (int) AgentController.getDifferentiationHeuristic(state);
 	}
 	
-	if (availableMoves.isEmpty()) return alphaBeta(alpha, beta, depth-1, state, !isMaximizingPlayer, GameTreeUtility.getCounterPlayer(playerTurn), startTime, timeLimit);
+	if (availableMoves.isEmpty()) return alphaBeta(alpha, beta, depth-1, state, GameTreeUtility.getCounterPlayer(playerTurn), startTime, timeLimit);
 	
-	if (isMaximizingPlayer) {
+	if (playerTurn==PlayerTurn.PLAYER_ONE) {
 		int maxEval = Integer.MIN_VALUE;
 		for (ObjectiveWrapper move : availableMoves) {
 			GameBoardState childState = AgentController.getNewState(state, move);	
-			int eval = alphaBeta(alpha, beta, depth-1, childState, !isMaximizingPlayer, GameTreeUtility.getCounterPlayer(playerTurn), startTime, timeLimit);
+			int eval = alphaBeta(alpha, beta, depth-1, childState, GameTreeUtility.getCounterPlayer(playerTurn), startTime, timeLimit);
 			maxEval = Math.max(maxEval, eval);
 			alpha = Math.max(alpha, eval);
 			if (beta <= alpha) {
@@ -126,7 +122,7 @@ public class AlphaBeta extends Agent {
 		int minEval = Integer.MAX_VALUE;
 		for (ObjectiveWrapper move : availableMoves) {
 			GameBoardState childState = AgentController.getNewState(state, move);	
-			int eval = alphaBeta(alpha, beta, depth-1, childState, !isMaximizingPlayer, GameTreeUtility.getCounterPlayer(playerTurn), startTime, timeLimit);
+			int eval = alphaBeta(alpha, beta, depth-1, childState, GameTreeUtility.getCounterPlayer(playerTurn), startTime, timeLimit);
 			minEval = Math.min(minEval, eval);
 			beta = Math.min(beta, eval);
 			if (beta <= alpha) {
