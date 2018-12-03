@@ -29,6 +29,7 @@ public class AlphaBeta extends Agent {
 	public AgentMove getMove(GameBoardState gameState) {
 		nodesExplored=0;
 		prunedBranches=0;
+		int bestDepth=0;
 		
 		int waitTime = UserSettings.MIN_SEARCH_TIME;
 		ThreadManager.pause(TimeSpan.millis(waitTime));
@@ -38,26 +39,30 @@ public class AlphaBeta extends Agent {
 		int maxScore = Integer.MIN_VALUE;
 		MoveWrapper bestMoveFound = new MoveWrapper(null);
 		List<ObjectiveWrapper> AvailableMoves = AgentController.getAvailableMoves(gameState, playerTurn);
+		//int maxDepth = 12-gameState.getTotalCount(); // not working
+		int maxDepth = 12;
+		System.out.println("totalCount=" + gameState.getBoardSize());
 		
 		for (ObjectiveWrapper move : AvailableMoves) {
 			GameBoardState childState = AgentController.getNewState(gameState, move);
 			long searchTimeLimit = ((UserSettings.MAX_SEARCH_TIME) / (AvailableMoves.size()));
-			int score = iterativeDeepeningSearch(childState, searchTimeLimit);
+			int score = iterativeDeepeningSearch(childState, searchTimeLimit, maxDepth);
 			if (score > maxScore) {
 				maxScore = score;
 				bestMoveFound = new MoveWrapper(move);
+				bestDepth=depth;
 			}
 		}
-		System.out.println("time take: " + String.valueOf(System.currentTimeMillis()-startTime) + "mS");
-		System.out.println("Move based on " + String.valueOf(depth) + " moves ahead!");
-		System.out.println("bestMove: "+String.valueOf(maxScore));
+		//System.out.println("time take: " + String.valueOf(System.currentTimeMillis()-startTime) + "mS");
+		System.out.println("Depth of the search: " + String.valueOf(bestDepth));
+		//System.out.println("bestMove: "+String.valueOf(maxScore));
 		// System.out.println("Depth reached: " + depth);
 		System.out.println("Nodes explored: "+ nodesExplored);
 		System.out.println("Branched pruned: " + prunedBranches);
 		return bestMoveFound;
 	}
 
-	private int iterativeDeepeningSearch(GameBoardState state, long timeLimit) {
+	private int iterativeDeepeningSearch(GameBoardState state, long timeLimit, int maxDepth) {
 		long startTime = System.currentTimeMillis();
 		long endTime = startTime + timeLimit;
 		depth = 0;
@@ -66,8 +71,8 @@ public class AlphaBeta extends Agent {
 		
 		while (true) {
 			long currentTime = System.currentTimeMillis();
-			
-			if (currentTime >= endTime) {
+			//How do we solve so that all children are compared at the same depth?
+			if (currentTime >= endTime || depth==maxDepth) {
 				break;
 			}
 			
@@ -75,11 +80,11 @@ public class AlphaBeta extends Agent {
 			
 			if (!searchCutoff) {
 				score = searchResult;
+				depth++;
 			}
 			
-			depth+=2;
 		}
-		System.out.println("result on depth " + String.valueOf(depth)+ ": " + String.valueOf(score));
+		//System.out.println("result on depth " + String.valueOf(depth)+ ": " + String.valueOf(score));
 		return score;
 	}
 	
