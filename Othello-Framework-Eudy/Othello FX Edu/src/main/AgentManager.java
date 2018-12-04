@@ -45,64 +45,17 @@ import javafx.stage.Stage;
  */
 public class AgentManager extends Application{
 	
-
 	/**
 	 * Application start method: Choose the agent
 	 * you wish to use and run the program
 	 */
 	@Override
 	public void start(Stage primaryStage) {
-		//new Othello(primaryStage, new ExampleAgentOne("Agent A"), new ExampleAgentTwo("Agent B"));
-		//new Othello(primaryStage, new ExampleAgentB());
-		/* ExampleAgentC uses findSafeMove */
-		//new Othello(primaryStage, new ExampleAgentC());
-		//new Othello(primaryStage, new ExampleAgentD());
-		//new Othello(primaryStage, null);
-		new Othello(primaryStage, new AlphaBeta("IDAB Agent", PlayerTurn.PLAYER_ONE), new ExampleAgentD("Random Agent", PlayerTurn.PLAYER_TWO));
-		//new Othello(primaryStage, new AlphaBeta());
+		new Othello(primaryStage, new AlphaBeta("IDAB Agent", PlayerTurn.PLAYER_ONE), new ExampleAgentD("Random Agent", PlayerTurn.PLAYER_TWO));		
+		//new Othello(primaryStage, new AlphaBeta("IDAB Agent", PlayerTurn.PLAYER_ONE));
 	}
 
 	public static void main(String[] args) {
-		launch(args);
-		
-	}
-	
-	public static void printBoard(GameBoardCell[][] cells) {
-		printBoard(cells, false);
-	}
-	
-	public static void printBoard(GameBoardCell[][] cells, boolean print) {
-		
-		if(!print){
-			return;
-		}
-		
-		System.out.println();
-		
-		System.out.print(" ");
-		for (int row = 0; row < cells.length; row++) {
-			System.out.print("   "+row);
-		}
-		System.out.println();
-		for (int row = 0; row < cells.length; row++) {
-
-			System.out.println("  ---------------------------------");
-
-			System.out.print(row + " |");
-
-			for (int col = 0; col < cells[row].length; col++) {
-
-				if (cells[col][row].getCellState() != BoardCellState.EMPTY) {
-					System.out.print(" " + cells[col][row] + " |");
-				} else {
-					System.out.print(" " + " " + " |");
-				}
-			}
-
-			System.out.println("");
-		}
-		System.out.println("  ---------------------------------");
-		
-		System.out.println();
-	}
+		launch(args);	
+	}	
 }
