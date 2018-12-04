@@ -44,6 +44,7 @@ public class AlphaBeta extends Agent {
 			// should the children be true or false?
 			int value = alphaBeta(Integer.MIN_VALUE, Integer.MAX_VALUE, depth-1, childState, playerTurn);
 			if (value>bestMove) {
+				
 				bestMove = value;
 				bestMoveFound = new MoveWrapper(move);
 			}
