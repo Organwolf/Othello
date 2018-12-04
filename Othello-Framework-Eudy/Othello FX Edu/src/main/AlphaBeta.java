@@ -7,7 +7,6 @@ import com.eudycontreras.othello.capsules.MoveWrapper;
 import com.eudycontreras.othello.capsules.ObjectiveWrapper;
 import com.eudycontreras.othello.controllers.Agent;
 import com.eudycontreras.othello.controllers.AgentController;
-import com.eudycontreras.othello.controllers.AgentController.StrategyType;
 import com.eudycontreras.othello.enumerations.BoardCellState;
 import com.eudycontreras.othello.enumerations.PlayerTurn;
 import com.eudycontreras.othello.models.GameBoardCell;
@@ -15,7 +14,6 @@ import com.eudycontreras.othello.models.GameBoardState;
 import com.eudycontreras.othello.threading.ThreadManager;
 import com.eudycontreras.othello.threading.TimeSpan;
 import com.eudycontreras.othello.utilities.GameTreeUtility;
-import com.eudycontreras.othello.views.GameInfoView;
 
 public class AlphaBeta extends Agent {
 	int nodesExplored = 0;
@@ -48,8 +46,6 @@ public class AlphaBeta extends Agent {
 		MoveWrapper bestMoveFound = new MoveWrapper(null);
 		List<ObjectiveWrapper> AvailableMoves = AgentController.getAvailableMoves(gameState, playerTurn);
 		int maxDepth = getnbrOfUnoccupiedPieces(gameState);
-		//int maxDepth = 12;
-		//System.out.println("Unoccupied: " + getnbrOfUnoccupiedPieces(gameState));
 
 		for (ObjectiveWrapper move : AvailableMoves) {
 			GameBoardState childState = AgentController.getNewState(gameState, move);
@@ -77,23 +73,16 @@ public class AlphaBeta extends Agent {
 
 		while (true) {
 			long currentTime = System.currentTimeMillis();
-			// How do we solve so that all children are compared at the same depth?
 			if (currentTime >= endTime || depth == maxDepth) {
 				break;
 			}
-
 			int searchResult = alphaBeta(Integer.MIN_VALUE, Integer.MAX_VALUE, depth, state, playerTurn, currentTime,
 					endTime - currentTime);
-
 			if (!searchCutoff) {
 				score = searchResult;
 				depth++;
 			}
-
-		}
-		// System.out.println("result on depth " + String.valueOf(depth)+ ": " +
-		// String.valueOf(score));
-		return score;
+		}	return score;
 	}
 
 	private int alphaBeta(int alpha, int beta, int depth, GameBoardState state, PlayerTurn playerTurn, long startTime,
@@ -110,11 +99,8 @@ public class AlphaBeta extends Agent {
 		int nbrOfWhiteMoves = AgentController.getAvailableMoves(state, PlayerTurn.PLAYER_ONE).size();
 		int nbrOfBlackMoves = AgentController.getAvailableMoves(state, PlayerTurn.PLAYER_TWO).size();
 
-		// Iterative deepening - time limit exceeded should terminate the search
 		if (searchCutoff || depth == 0 || state.isTerminal() || ((nbrOfBlackMoves + nbrOfWhiteMoves) == 0)) {
 			return (int) AgentController.getGameEvaluation(state, playerTurn);
-			// return (int) AgentController.getMobilityHeuristic(state);
-			// return (int) AgentController.getDifferentiationHeuristic(state);
 		}
 
 		if (availableMoves.isEmpty())
@@ -133,8 +119,7 @@ public class AlphaBeta extends Agent {
 					prunedBranches++;
 					break;
 				}
-			}
-			return maxEval;
+			}	return maxEval;
 		} else {
 			int minEval = Integer.MAX_VALUE;
 			for (ObjectiveWrapper move : availableMoves) {
@@ -147,16 +132,12 @@ public class AlphaBeta extends Agent {
 					prunedBranches++;
 					break;
 				}
-			}
-			return minEval;
+			}	return minEval;
 		}
 	}
 
 	private int getnbrOfUnoccupiedPieces(GameBoardState state) {
 		GameBoardCell[][] grid = state.getGameBoard().getCells();
-//		int totalNbrOfSquares = UserSettings.BOARD_GRID_SIZE * UserSettings.BOARD_GRID_SIZE;
-//		int agentPieces = 0;
-//		int humanPieces = 0;
 		int nbrOfUnoccupied = 0;
 
 		for (int row = 0; row < grid.length; row++) {
@@ -168,13 +149,7 @@ public class AlphaBeta extends Agent {
 				else {
 					nbrOfUnoccupied++;
 				}
-//				if (grid[row][col].getCellState() == BoardCellState.WHITE) {
-//					agentPieces++;
-//				} else if (grid[row][col].getCellState() == BoardCellState.BLACK) {
-//					humanPieces++;
-//				}
 			}
-		}
-		return nbrOfUnoccupied;
+		}	return nbrOfUnoccupied;
 	}
 }
