@@ -10,7 +10,7 @@ What we have added to the framework can be found in AlphaBeta.java. This class e
 
 To the right of the board statistics of how many branches have been pruned and what depth was reached can be seen. We have set the MIN_SEARCH_TIME to 2 seconds. Otherwise the statistics get overwritten. If this is annoying just trust that the algorithm actually does what it’s supposed to and change the minimum search time to zero.
 
-As is the program plays a game with our alpha-beta algorithm against an algorithms that randomly selects a move. If you would like to change this you will have to do two things. First, open UserSettings.java and change:  
+As is the program plays a game with our alpha-beta algorithm against an algorithm that randomly selects a move. If you would like to change this you will have to do two things. First, open UserSettings.java and change:  
 
 ```
 	public static final GameMode GAME_MODE = GameMode.AGENT_VS_AGENT;
