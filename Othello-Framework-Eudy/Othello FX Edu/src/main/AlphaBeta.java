@@ -30,6 +30,10 @@ public class AlphaBeta extends Agent {
 	public AlphaBeta(PlayerTurn playerTurn) {
 		super(playerTurn);
 	}
+	
+	public AlphaBeta(String name, PlayerTurn playerTurn) {
+		super(name, playerTurn);
+	}
 
 	public AgentMove getMove(GameBoardState gameState) {
 		nodesExplored = 0;

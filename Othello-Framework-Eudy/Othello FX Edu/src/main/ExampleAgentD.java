@@ -30,6 +30,12 @@ public class ExampleAgentD extends Agent{
 		super(playerTurn);
 		// TODO Auto-generated constructor stub
 	}
+	
+	public ExampleAgentD(String name, PlayerTurn playerTurn) {
+		super(name, playerTurn);
+		// TODO Auto-generated constructor stub
+	}
+	
 
 	/**
 	 * Delete the content of this method and Implement your logic here!

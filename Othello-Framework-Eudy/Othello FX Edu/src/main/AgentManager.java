@@ -57,9 +57,9 @@ public class AgentManager extends Application{
 		/* ExampleAgentC uses findSafeMove */
 		//new Othello(primaryStage, new ExampleAgentC());
 		//new Othello(primaryStage, new ExampleAgentD());
-		//new Othello(primaryStage, new Minimax());
-		//new Othello(primaryStage, new AlphaBeta(), new ExampleAgentD(PlayerTurn.PLAYER_TWO));
-		new Othello(primaryStage, new AlphaBeta());
+		//new Othello(primaryStage, null);
+		new Othello(primaryStage, new AlphaBeta("IDAB Agent", PlayerTurn.PLAYER_ONE), new ExampleAgentD("Random Agent", PlayerTurn.PLAYER_TWO));
+		//new Othello(primaryStage, new AlphaBeta());
 	}
 
 	public static void main(String[] args) {
