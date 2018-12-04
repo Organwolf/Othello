@@ -10,7 +10,7 @@ What we have added to the framework can be found in AlphaBeta.java. This class e
 
 To the right of the board statistics of how many branches have been pruned and what depth was reached can be seen. We have set the MIN_SEARCH_TIME to 2 seconds. Otherwise the statistics get overwritten. If this is annoying just trust that the algorithm actually does what it’s supposed to and change the minimum search time to zero.
 
-As is the program plays a game with our alpha-beta algorithm against an algorithms that randomly selects a move. If you would like to change this do the following. Change:  
+As is the program plays a game with our alpha-beta algorithm against an algorithms that randomly selects a move. If you would like to change this you will have to do two things. First, open UserSettings.java and change:  
 
 ```
 	public static final GameMode GAME_MODE = GameMode.AGENT_VS_AGENT;
@@ -22,8 +22,14 @@ to
 	public static final GameMode GAME_MODE = GameMode.HUMAN_VS_AGENT;
 ```
 
-
-GitHub: https://github.com/Organwolf/Othello
+Secondly open AgentManager. Under start() change:
+```
+new Othello(primaryStage, new AlphaBeta("IDAB Agent", PlayerTurn.PLAYER_ONE), new ExampleAgentD("Random Agent", PlayerTurn.PLAYER_TWO));
+```
+to
+```
+new Othello(primaryStage, new AlphaBeta("IDAB Agent", PlayerTurn.PLAYER_ONE));
+```
 
 //Aron & Filip
 
